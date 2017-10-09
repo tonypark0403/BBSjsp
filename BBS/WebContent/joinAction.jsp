@@ -17,6 +17,17 @@
 </head>
 <body>
 	<%
+		String userID = null;
+		if (session.getAttribute("userID") != null) {
+			userID = (String) session.getAttribute("userID");
+		}
+		if (userID != null) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('Already log in!!!')");
+			script.println("location.href = 'main.jsp'");
+			script.println("</script>");
+		}
 		if (user.getUserID() == null || user.getUserPassword() == null
 				|| user.getUserName() == null || user.getUserGender() == null
 				|| user.getUserEmail() == null) {
@@ -34,7 +45,8 @@
 				script.println("alert('Already existing ID!!!')");
 				script.println("history.back()");
 				script.println("</script>");
-			} else { //if (result == 0) 
+			} else { //if (result == 0)
+				session.setAttribute("userID", user.getUserID());
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("location.href = 'main.jsp'");
