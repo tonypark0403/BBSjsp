@@ -2,7 +2,7 @@ package user;
 
 public class User {
 	private String userID;
-	private String userPasword;
+	private String userPassword;
 	private String userName;
 	private String userGender;
 	private String userEmail;
@@ -13,11 +13,11 @@ public class User {
 	public void setUserID(String userID) {
 		this.userID = userID;
 	}
-	public String getUserPasword() {
-		return userPasword;
+	public String getUserPassword() {
+		return userPassword;
 	}
-	public void setUserPasword(String userPasword) {
-		this.userPasword = userPasword;
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 	public String getUserName() {
 		return userName;
