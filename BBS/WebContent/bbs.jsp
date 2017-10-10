@@ -29,8 +29,8 @@
 		</div>
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><a href="main.jsp">Main</a></li>
-				<li><a href="bbs.jsp">Bulletin Board</a></li>
+				<li><a href="main.jsp">Main</a></li>
+				<li class="active"><a href="bbs.jsp">Bulletin Board</a></li>
 			</ul>
 			<%
 				if (userID == null) {
@@ -64,6 +64,30 @@
 			%>
 		</div>
 	</nav>
+	<div class="container">
+		<div class="row">
+			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
+				<thead>
+					<tr>
+						<th style="background-color: #eeeeee; text-align: center;">Number</th>
+						<th style="background-color: #eeeeee; text-align: center;">Title</th>
+						<th style="background-color: #eeeeee; text-align: center;">Writer</th>
+						<th style="background-color: #eeeeee; text-align: center;">Date</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>1</td>
+						<td>Hello.</td>
+						<td>Tony</td>
+						<td>2017-10-09</td>
+					</tr>
+				</tbody>
+			</table>
+			<a href="write.jsp" class="btn btn-primary pull-right">Write</a>
+		</div>
+	</div>
+	
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.js"></script>
 </body>
