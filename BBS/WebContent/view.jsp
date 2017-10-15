@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
-<%@ page import="bbs.BbsDAO" %>
 <%@ page import="bbs.Bbs" %>
-<%@ page import="java.util.ArrayList" %>
+<%@ page import="bbs.BbsDAO" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,12 +11,6 @@
 <meta name="viewport" content="width=device-width", initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <title>JSP Bulletin Board System</title>
-<style type="text/css">
-	a, a:hover {
-		color: #000000;
-		text-decoration: none;
-	}
-</style>
 </head>
 <body>
 	<%
@@ -24,10 +18,18 @@
 		if (session.getAttribute("userID") != null) {
 			userID = (String) session.getAttribute("userID");
 		}
-		int pageNumber = 1;
-		if (request.getParameter("pageNumber") != null) {
-			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
+		int bbsID = 0;
+		if (request.getParameter("bbsID") != null) {
+			bbsID = Integer.parseInt(request.getParameter("bbsID"));
 		}
+		if (bbsID == 0) {
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('Invalid writing!!!')");
+			script.println("location.href = 'bbs.jsp'");
+			script.println("</script>");
+		}
+		Bbs bbs = new BbsDAO().getBbs(bbsID);
 	%>
 	<nav class="navbar navbar-default">
 		<div class="navbar-header">
@@ -82,46 +84,38 @@
 			<table class="table table-striped" style="text-align: center; border: 1px solid #dddddd">
 				<thead>
 					<tr>
-						<th style="background-color: #eeeeee; text-align: center;">Number</th>
-						<th style="background-color: #eeeeee; text-align: center;">Title</th>
-						<th style="background-color: #eeeeee; text-align: center;">Writer</th>
-						<th style="background-color: #eeeeee; text-align: center;">Date</th>
+						<th colspan="3" style="background-color: #eeeeee; text-align: center;">BBS Write Display</th>
 					</tr>
 				</thead>
 				<tbody>
-					<%
-						BbsDAO bbsDAO = new BbsDAO();
-						ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
-						for(Bbs bbs : list) {
-					%>
 					<tr>
-						<td><%= bbs.getBbsID() %></td>
-						<td>
-							<a href="view.jsp?bbsID=<%= bbs.getBbsID() %>">
-								<%= bbs.getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %>
-							</a>
-						</td>
-						<td><%= bbs.getUserID() %></td>
-						<td><%= bbs.getBbsDate().substring(0, 11) + bbs.getBbsDate().substring(11, 13) + ":" + bbs.getBbsDate().substring(14, 16) %></td>
+						<td style="width: 20%">Title</td>
+						<td colspan="2"><%= bbs.getBbsTitle().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
 					</tr>
-					<%
-						}
-					%>
+					<tr>
+						<td>Writer</td>
+						<td colspan="2"><%= bbs.getUserID() %></td>
+					</tr>
+					<tr>
+						<td>Date</td>
+						<td colspan="2"><%= bbs.getBbsDate().substring(0, 11) + bbs.getBbsDate().substring(11, 13) + ":" + bbs.getBbsDate().substring(14, 16) %></td>
+					</tr>
+					<tr>
+						<td>Content</td>
+						<td colspan="2" style="min-height: 200px; text-align: justify"><%= bbs.getBbsContent().replaceAll(" ", "&nbsp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll("\n", "<br>") %></td>
+					</tr>
 				</tbody>
 			</table>
+			<a href="bbs.jsp" class="btn btn-primary">List</a>
 			<%
-				if(pageNumber != 1) {		
+				if(userID != null && userID.equals(bbs.getUserID())) {
 			%>
-				<a href="bbs.jsp?pageNumber=<%= pageNumber - 1 %>" class="btn btn-success btn-arrow-left">Prev</a>
-			<%
-				}
-				if (bbsDAO.nextPage(pageNumber + 1)) {
-			%>
-				<a href="bbs.jsp?pageNumber=<%= pageNumber + 1 %>" class="btn btn-success btn-arrow-right">Next</a>
+					<a href="update.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">Update</a>
+					<a href="deleteAction.jsp?bbsID=<%= bbsID %>" class="btn btn-primary">Update</a>
 			<%
 				}
 			%>
-			<a href="write.jsp" class="btn btn-primary pull-right">Write</a>
+				
 		</div>
 	</div>
 	
