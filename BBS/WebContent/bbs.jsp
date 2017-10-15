@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
+<%@ page import="bbs.BbsDAO" %>
+<%@ page import="bbs.Bbs" %>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +11,22 @@
 <meta name="viewport" content="width=device-width", initial-scale="1">
 <link rel="stylesheet" href="css/bootstrap.css">
 <title>JSP Bulletin Board System</title>
+<style type="text/css">
+	a, a:hover {
+		color: #000000;
+		text-decoration: none;
+	}
+</style>
 </head>
 <body>
 	<%
 		String userID = null;
 		if (session.getAttribute("userID") != null) {
 			userID = (String) session.getAttribute("userID");
+		}
+		int pageNumber = 1;
+		if (request.getParameter("pageNumber") != null) {
+			pageNumber = Integer.parseInt(request.getParameter("pageNumber"));
 		}
 	%>
 	<nav class="navbar navbar-default">
@@ -76,14 +89,38 @@
 					</tr>
 				</thead>
 				<tbody>
+					<%
+						BbsDAO bbsDAO = new BbsDAO();
+						ArrayList<Bbs> list = bbsDAO.getList(pageNumber);
+						for(Bbs bbs : list) {
+					%>
 					<tr>
-						<td>1</td>
-						<td>Hello.</td>
-						<td>Tony</td>
-						<td>2017-10-09</td>
+						<td><%= bbs.getBbsID() %></td>
+						<td>
+							<a href="view.jsp?bbsID=<%= bbs.getBbsID() %>">
+								<%= bbs.getBbsTitle() %>
+							</a>
+						</td>
+						<td><%= bbs.getUserID() %></td>
+						<td><%= bbs.getBbsDate().substring(0, 11) + bbs.getBbsDate().substring(11, 13) + ":" + bbs.getBbsDate().substring(14, 16) %></td>
 					</tr>
+					<%
+						}
+					%>
 				</tbody>
 			</table>
+			<%
+				if(pageNumber != 1) {		
+			%>
+				<a href="bbs.jsp?pageNumber=<%= pageNumber - 1 %>" class="btn btn-success btn-arrow-left">Prev</a>
+			<%
+				}
+				if (bbsDAO.nextPage(pageNumber + 1)) {
+			%>
+				<a href="bbs.jsp?pageNumber=<%= pageNumber + 1 %>" class="btn btn-success btn-arrow-right">Next</a>
+			<%
+				}
+			%>
 			<a href="write.jsp" class="btn btn-primary pull-right">Write</a>
 		</div>
 	</div>
