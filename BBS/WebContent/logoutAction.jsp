@@ -4,10 +4,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="css/custom.css">
 <title>JSP Bulletin Board System</title>
 </head>
 <body>
+	<%
+		session.invalidate();
+	%>
 	<script>
 		location.href = "main.jsp";
 	</script>
