@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>JSP Bullet Board System</title>
+<title>JSP Bulletin Board System</title>
 </head>
 <body>
 	<script>
